@@ -22,6 +22,7 @@ PACKAGES=(
 PACKAGES_GUI=(
 	"chromium-browser"
 	"flashplugin-installer"
+	"vlc"
 )
 
 USER_GROUPS=(
