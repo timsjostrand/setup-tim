@@ -16,6 +16,7 @@ PACKAGES=(
 	"build-essential"
 	"screen"
 	"curl"
+	"snmp"
 )
 
 PACKAGES_GUI=(
