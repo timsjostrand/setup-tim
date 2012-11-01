@@ -24,6 +24,7 @@ PACKAGES_GUI=(
 	"chromium-browser"
 	"flashplugin-installer"
 	"vlc"
+	"wireshark"
 )
 
 USER_GROUPS=(
