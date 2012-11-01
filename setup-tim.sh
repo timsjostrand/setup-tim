@@ -17,6 +17,7 @@ PACKAGES=(
 	"screen"
 	"curl"
 	"snmp"
+	"tcpdump"
 )
 
 PACKAGES_GUI=(
