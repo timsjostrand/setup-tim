@@ -5,7 +5,10 @@
 # Override options by setting them in the environment, like so:
 # GIT_USER=apples GIT_EMAIL=spam ./setup-tim.sh
 #
-# Author: Tim Sjöstrand <tim.sjostrand@gmail.com>
+# Run only specific tasks by specifying them as arguments, like so:
+# ./setup-tim.sh git_config vim_config
+#
+# Author: Tim Sjöstrand <tim.sjostrand@gmail.com>.
 
 PACKAGES=(
 	"vim-nox"
@@ -56,7 +59,7 @@ out_pad() {
 	done
 }
 
-do_install_packages() {
+do_packages() {
 	echo
 	echo "> Updating repositories..."
 	apt-get update >apt.log 2>&1 || {
@@ -111,7 +114,7 @@ do_update_groups() {
 	done
 }
 
-do_update_git_config() {
+do_git_config() {
 	echo
 	echo "> Setting up git"
 
@@ -133,7 +136,7 @@ do_update_git_config() {
 	fi
 }
 
-do_update_vim_config() {
+do_vim_config() {
 	echo
 
 	if [ -f "${VIM_RC}" ]
@@ -172,7 +175,7 @@ do_clean_up() {
 	echo
 	echo "> Cleaning up"
 
-	rm apt.log
+	rm apt.log 2>/dev/null || true
 }
 
 if [ "$(whoami)" != "root" ]
@@ -180,10 +183,19 @@ then
 	echo "WARN: You probably want to be root"
 fi
 
-do_update_groups
-do_install_packages
-do_update_git_config
-do_update_vim_config
+if [ "${#}" -le 0 ]
+then
+	do_update_groups
+	do_packages
+	do_git_config
+	do_vim_config
+else
+	for task in ${@}
+	do
+		do_${task}
+	done
+fi
+
 do_clean_up
 
 echo
