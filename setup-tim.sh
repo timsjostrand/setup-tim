@@ -139,36 +139,22 @@ do_git_config() {
 do_vim_config() {
 	echo
 
-	if [ -f "${VIM_RC}" ]
+	# Link vim config
+	echo "> Installing ${VIM_RC}..."
+	ln -fs "${PWD}/vimrc" "${VIM_RC}"
+
+	# Install Vundle
+	if [ ! -d "~/.vim/bundle/Vundle.vim" ]
 	then
-		echo "> Updating ${VIM_RC}"
-	else
-		echo "> Creating ${VIM_RC}"
-		touch "${VIM_RC}"
+		echo "> Installing Vundle..."
+		mkdir -p ~/.vim/bundle/
+		git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/Vundle.vim
 	fi
 
-	# Try to avoid overriding existing settings
-	for line in "${VIM_SETTINGS[@]}"
-	do
-		if [ ! -z "$(echo "${line}" | grep 'set ')" ]
-		then
-			if [ -z "$(grep "${line}" "${VIM_RC}")" ]
-			then
-				echo "${line}" >> "${VIM_RC}"
-			else
-				echo "  Skipping \"${line}\", already present"
-			fi
-		else
-			keyword=$(echo "${line}" | cut -d' ' -f1)
-
-			if [ -z "$(sed -n "s/^${keyword} \(.*\)$/\1/p" "${VIM_RC}")" ]
-			then
-				echo "${line}" >> "${VIM_RC}"
-			else
-				echo "  Skipping \"${keyword}\", already present"
-			fi
-		fi
-	done
+	# Install Vundle plugins
+	echo "> Installing vim plugins..."
+	vim +PluginInstall +qall >/dev/null 2>&1 || \
+		echo "> ERROR: when installing vim plugins"
 }
 
 do_clean_up() {
