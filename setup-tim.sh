@@ -136,6 +136,12 @@ do_git_config() {
 	fi
 }
 
+do_xterm_colors() {
+	echo
+	echo "> Updating TERM with 256 colors support..."
+	grep 'export TERM' ~/.bashrc || echo "export TERM="xterm-256color"" >> ~/.bashrc
+}
+
 do_vim_config() {
 	echo
 
@@ -176,6 +182,7 @@ then
 	do_update_groups
 	do_packages
 	do_git_config
+	do_xterm_colors
 	do_vim_config
 else
 	for task in ${@}
