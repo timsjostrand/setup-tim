@@ -148,8 +148,9 @@ do_vim_config() {
 	then
 		echo "> Installing Vundle..."
 		mkdir -p ~/.vim/bundle/
-        ln -fs "${PWD}/Vundle.vim" ~/.vim/bundle/Vundle.vim
-#       git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/Vundle.vim
+		git submodule update --init
+		ln -fs "${PWD}/Vundle.vim" ~/.vim/bundle/Vundle.vim
+#		git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/Vundle.vim
 	fi
 
 	# Install Vundle plugins
